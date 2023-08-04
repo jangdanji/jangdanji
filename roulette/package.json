@@ -1,0 +1,17 @@
+{
+  "name": "roulette",
+  "version": "1.0.0",
+  "description": "",
+  "main": "roulette.js",
+  "scripts": {
+    "dev": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.21",
+    "nodemon": "^3.0.1",
+    "parcel-bundler": "^1.12.5"
+  }
+}

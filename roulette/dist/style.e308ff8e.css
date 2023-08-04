@@ -1,0 +1,48 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.root {
+  background-color: #1A5D1A;
+}
+.root .container {
+  width: 1250px;
+  height: 100vh;
+  margin: 0 auto;
+}
+.root .container .roulette {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+}
+.root .container .roulette .result {
+  width: 100%;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #fff;
+}
+.root .container .roulette .btn-zone {
+  display: flex;
+}
+.root .container .roulette .btn-zone button {
+  display: block;
+  padding: 10px 20px;
+  border-radius: 5px;
+  background-color: #F1C93B;
+  border: none;
+  cursor: pointer;
+  transition: 0.1s;
+  margin: 30px 10px 0 10px;
+}
+.root .container .roulette .btn-zone button:hover {
+  background-color: black;
+  color: white;
+}
+
+/*# sourceMappingURL=/style.e308ff8e.css.map */
