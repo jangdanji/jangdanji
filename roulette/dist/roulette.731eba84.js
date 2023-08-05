@@ -19372,40 +19372,40 @@ var define;
 
 },{"buffer":"node_modules/buffer/index.js"}],"roulette.js":[function(require,module,exports) {
 var _ = require('lodash');
-var mission = ['디바 4인궁 이상 성공하기', '겐지 용검 4검 이상 성공하기', '정크랫 똥에 10번 맞아죽기', '메르시로 딜금먹기', '마이크쓰는 친구 만들어오기', '송하나 메카탑승에 깔려 죽기'];
-var shuffled = _.shuffle(mission);
+var yourMission = document.querySelector('.full-modal .custom .mission-list textarea');
+yourMission.value = "\uB514\uBC14 4\uC778\uAD81 \uC774\uC0C1 \uC131\uACF5\uD558\uAE30\n\uAC90\uC9C0 \uC6A9\uAC80 4\uAC80 \uC774\uC0C1 \uC131\uACF5\uD558\uAE30\n\uC815\uD06C\uB7AB \uB625\uC5D0 10\uBC88 \uB9DE\uC544\uC8FD\uAE30\n\uBA54\uB974\uC2DC\uB85C \uB51C\uAE08\uBA39\uAE30\n\uB9C8\uC774\uD06C\uC4F0\uB294 \uCE5C\uAD6C \uB9CC\uB4E4\uC5B4\uC624\uAE30\n\uC1A1\uD558\uB098 \uBA54\uCE74\uD0D1\uC2B9\uC5D0 \uAE54\uB824 \uC8FD\uAE30";
 var spinBtn = document.querySelector('.btn-zone button.spin');
 var resultWindow = document.querySelector('.roulette p.result');
-function count(endpoint) {
-  var index = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-  var delay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 20;
+function count(shuffledList, endpoint) {
+  var index = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+  var delay = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 20;
   var result;
+  console.log(endpoint);
   if (index < endpoint) {
     setTimeout(function () {
-      result = shuffled[index % shuffled.length];
+      result = shuffledList[index % shuffledList.length];
       resultWindow.textContent = result;
-      count(endpoint, index + 1, index < endpoint - 30 ? 20 : delay + 16); /* index가 70 이상 넘어가면 delay가 10씩 누적으로 증가 */
+      count(shuffledList, endpoint, index + 1, index < endpoint - 30 ? 20 : delay + 16); /* index가 70 이상 넘어가면 delay가 10씩 누적으로 증가 */
     }, delay);
   } else if (index > endpoint) {
     setTimeout(function () {
-      if (Math.random() < 0.5) {
-        result = shuffled[index % shuffled.length];
-        resultWindow.textContent = result;
-        resultWindow.style.cssText = "\n          background-color : #FAE392; font-size: 34px;\n        ";
-      } else {
-        result = shuffled[(index - 1) % shuffled.length];
-        resultWindow.textContent = result;
-        resultWindow.style.cssText = "\n        background-color : #FAE392; font-size: 34px;\n      ";
-      }
-    }, 1000);
+      if (Math.random() < 0.5) result = shuffledList[index % shuffledList.length];else result = shuffledList[(index - 1) % shuffledList.length];
+      resultWindow.textContent = result;
+      resultWindow.style.cssText = "background-color : #FAE392; font-size: 34px;";
+      var btnZone = document.querySelector('.roulette .btn-zone');
+      btnZone.style.display = 'flex';
+    }, 1500);
   }
 }
 spinBtn.addEventListener('click', function () {
+  var btnZone = document.querySelector('.roulette .btn-zone');
+  btnZone.style.display = 'none';
+  var missions = document.querySelector('.full-modal .custom textarea').value;
+  var shuffledList = _.shuffle(missions.split('\n'));
   resultWindow.style.backgroundColor = 'white';
-  count(shuffled.length + 100 + Math.random() * 200); /* 0 ~ 배열length 중에 랜덤한 값 */
+  var end = shuffledList.length + 100 + Math.random() * 200;
+  count(shuffledList, endpoint = end); /* 0 ~ 배열length 중에 랜덤한 값 */
 });
-
-// console.log(Math.random() * 2)
 },{"lodash":"node_modules/lodash/lodash.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -19431,7 +19431,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "10437" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "3552" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
