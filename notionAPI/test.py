@@ -1,6 +1,4 @@
 import requests
-import pprint
-import json
 import random
 
 SCRIPT = []
@@ -10,7 +8,7 @@ databaseID = '3c79de87e6274af69ca72efa3f9f1bfc'
 
 DATABASE_URL = notionURL + databaseID
 
-key = 'secret_xjdGY7ZHYhJfcT7PikV33Em1WrqcI9zXq44av9KfNb4'
+key = 'secret_sZg3wfIvJuNLD5UVIZcHu5YXVWuY9RffdY5S2JB4XVz'
 
 payload = { "page_size": 100 }
 
