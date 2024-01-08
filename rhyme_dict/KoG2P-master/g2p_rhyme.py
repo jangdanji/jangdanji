@@ -470,7 +470,7 @@ def g2pRHYME(word , filterWord=''):
 
             # # print(i + ' [' + word + ']') # 최종 발음
 
-            print(f'\"{i}\"', end='\n\n') # 비교 문자
+            # print(f'\"{i}\"', end='\n\n') # 비교 문자
     
             hangul = re.compile('[^ ㄱ-ㅣ가-힣]+') # 한글과 띄어쓰기를 제외한 모든 글자
             i = hangul.sub('', i) # 한글과 띄어쓰기를 제외한 모든 부분을 제거
@@ -492,32 +492,38 @@ def g2pRHYME(word , filterWord=''):
             word2 = hgtk.letter.decompose(i[-1])
 
             
-            def check_rhyme_ultimate(userWords, compareWords):
+            def check_rhyme_ultimate(userWords, compareWords, length=None): # 발음 그대로 넣어야됨
 
-                userChosung = []
-                userJungsung = []
+                # 단어 라임 자음까지 일치, 분석할 끝 글자 갯수 length로 제어가능
 
-                for word in userWords:
+                wordLength = len(userWords)
+
+                wordLength if length == None else 2 # length 안넣었으면 2
+
+                for uw, cw in zip(userWords, compareWords[-wordLength::]):
+
+                    userWordDecompose = hgtk.letter.decompose(uw)
+                    compareWordDecompose = hgtk.letter.decompose(cw)
+
+                    # print(f'{userWordDecompose} / {compareWordDecompose}')
                     
-                    userChosung.append(
-                        hgtk.letter.decompose(word)
-                    )
+                    check_jaum = jaumtype[userWordDecompose[0]] == jaumtype[compareWordDecompose[0]]
+                    check_moum = moumtype[userWordDecompose[1]] == moumtype[compareWordDecompose[1]]
+
+                    # print(f'check_jaum : {check_jaum}, check_moum : {check_moum}')
+                    # print(f'{check_jaum} : {userWordDecompose[0]} / {compareWordDecompose[0]}')
+                    # print(f'{check_moum} : {userWordDecompose[1]} / {compareWordDecompose[1]}')
+
+                    if check_jaum == False or check_moum == False:
+                        return False
                     
-
-
-
-
-
-
+                return True
             
-            # 모든 단어 모음 일치 (50%)
             def check_rhyme(userMoum, compareMoum, length):
 
-                compareMoum = compareMoum[-length:] # 마지막 x글자만 뽑기
+                # 모든 단어 모음 일치 (length로 끝 글자 제어 가능)
 
-                print('ㅎㅇ')
-                pprint.pprint(userMoum)
-                print(compareMoum)
+                compareMoum = compareMoum[-length:] # 마지막 x글자만 뽑기
 
                 for index, (key, value) in enumerate(userMoum.items()):
 
@@ -528,18 +534,22 @@ def g2pRHYME(word , filterWord=''):
             
                         
             # 끝 글자 두개만 받침빼고 초중성 일치 (100%)
-            rhyme_1 = chos[-2] == word1[0] and jungs[-2] == word1[1] and chos[-1] == word2[0] and jungs[-1] == word2[1]
+            # rhyme_1 = chos[-2] == word1[0] and jungs[-2] == word1[1] and chos[-1] == word2[0] and jungs[-1] == word2[1]
 
             # 끝 글자 두개만 고급 라임 일치 (70%)
-            rhyme_2 = jaumtype[chos[-2]] == jaumtype[word1[0]] and moumtype[jungs[-2]] == moumtype[word1[1]] and \
-                        jaumtype[chos[-1]] == jaumtype[word2[0]] and moumtype[jungs[-1]] == moumtype[word2[1]]
+            # rhyme_2 = jaumtype[chos[-2]] == jaumtype[word1[0]] and moumtype[jungs[-2]] == moumtype[word1[1]] and \
+            #             jaumtype[chos[-1]] == jaumtype[word2[0]] and moumtype[jungs[-1]] == moumtype[word2[1]]
+
+            rhyme_2 = check_rhyme_ultimate(word, i, 2)
             
-            rhyme_3 = check_rhyme(userMoum, compareMoum, len(word))
+            # 전부 모음 라임 일치
+            # rhyme_3 = check_rhyme(userMoum, compareMoum, len(word))
 
-            # rhyme_4 = check_rhyme(userMoum, compareMoum, 2)
+            # rhyme_4 = check_rhyme_ultimate(word, i)
+            
+            if rhyme_2 :
+                print(f'{i} : {rhyme_2}')
 
-            print(f'{i} : {rhyme_1}, {rhyme_2}, {rhyme_3}')
-    
 
     endWords = []
 
@@ -571,12 +581,14 @@ def g2pRHYME(word , filterWord=''):
 
     print(rhymes)
 
+    
+
 
 
     return rhymes
 
     
-a = g2pRHYME('사타구니에때가꼇어요')
+a = g2pRHYME('가지')
 
 print(a)
 print(len(a))
