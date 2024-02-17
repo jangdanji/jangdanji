@@ -37,46 +37,10 @@ import math
 import sys
 import optparse
 from unittest import result
+from mappings import dic, jaumtype, moumtype, moumtype_rev
 
 
 
-
-dic = {
-    'p0' : 'ㅂ', 'ph' : 'ㅍ', 'pp' : 'ㅃ', 't0' : 'ㄷ', 'th' : 'ㅌ', 'tt' : 'ㄸ', 'k0' : 'ㄱ',
-    'kh' : 'ㅋ', 'kk' : 'ㄲ', 's0' : 'ㅅ', 'ss' : 'ㅆ', 'h0' : 'ㅎ', 'c0' : 'ㅈ', 'ch' : 'ㅊ',
-    'cc' : 'ㅉ', 'mm' : 'ㅁ', 'nn' : 'ㄴ', 'rr' : 'ㄹ', 'pf' : 'ㅂ', 'ph' : 'ㅍ', 'tf' : 'ㄷ',
-    'th' : 'ㅌ', 'kf' : 'ㄱ', 'kh' : 'ㅋ', 'kk' : 'ㄲ', 's0' : 'ㅅ', 'ss' : 'ㅆ', 'h0' : 'ㅎ',
-    'c0' : 'ㅈ', 'ch' : 'ㅊ', 'mf' : 'ㅁ', 'nf' : 'ㄴ', 'ng' : 'ㅇ', 'll' : 'ㄹ', 'ks' : 'ㄳ',
-    'nc' : 'ㄵ', 'nh' : 'ㄶ', 'lk' : 'ㄺ', 'lm' : 'ㄻ', 'lb' : 'ㄼ', 'ls' : 'ㄽ', 'lt' : 'ㄾ',
-    'lp' : 'ㄿ', 'lh' : 'ㅀ', 'ps' : 'ㅄ', 'ii' : 'ㅣ', 'ee' : 'ㅔ', 'qq' : 'ㅐ', 'aa' : 'ㅏ',
-    'xx' : 'ㅡ', 'vv' : 'ㅓ', 'uu' : 'ㅜ', 'oo' : 'ㅗ', 'ye' : 'ㅖ', 'yq' : 'ㅒ', 'ya' : 'ㅑ',
-    'yv' : 'ㅕ', 'yu' : 'ㅠ', 'yo' : 'ㅛ', 'wi' : 'ㅟ', 'wo' : 'ㅚ', 'wq' : 'ㅙ', 'we' : 'ㅞ',
-    'wa' : 'ㅘ', 'wv' : 'ㅝ', 'xi' : 'ㅢ'
-}
-
-jaumtype = {
-    'ㄱ' : 'ja1', 'ㄷ' : 'ja1', 'ㅂ' : 'ja1', 'ㅋ' : 'ja1', 'ㅌ' : 'ja1',
-    'ㅍ' : 'ja1', 'ㄲ' : 'ja1', 'ㄸ' : 'ja1', 'ㅃ' : 'ja1',
-    'ㅅ' : 'ja2', 'ㅈ' : 'ja2', 'ㅊ' : 'ja2', 'ㅆ' : 'ja2', 'ㅉ' : 'ja2',
-    'ㄴ' : 'ja3', 'ㄹ' : 'ja3', 'ㅁ' : 'ja3',
-    'ㅇ' : 'ja4', 'ㅎ' : 'ja4'
-}
-
-moumtype = {
-    'ㅏ' : 'mo1', 'ㅑ' : 'mo1', 'ㅘ' : 'mo1',
-    'ㅓ' : 'mo2', 'ㅕ' : 'mo2', 'ㅝ' : 'mo2', 'ㅗ' : 'mo2', 'ㅛ' : 'mo2',
-    'ㅜ' : 'mo3', 'ㅠ' : 'mo3', 'ㅡ' : 'mo3',
-    'ㅣ' : 'mo4', 'ㅟ' : 'mo4', 'ㅢ' : 'mo4',
-    'ㅐ' : 'mo5', 'ㅒ' : 'mo5', 'ㅔ' : 'mo5', 'ㅖ' : 'mo5', 'ㅙ' : 'mo5', 'ㅚ' : 'mo5', 'ㅞ' : 'mo5'
-}
-
-moumtype_rev = {
-    'mo1' : ['ㅏ', 'ㅑ', 'ㅘ'],
-    'mo2' : ['ㅓ', 'ㅕ', 'ㅝ','ㅗ', 'ㅛ'],
-    'mo3' : ['ㅜ', 'ㅠ', 'ㅡ'],
-    'mo4' : ['ㅣ', 'ㅟ', 'ㅢ'],
-    'mo5' : ['ㅐ', 'ㅒ', 'ㅔ', 'ㅖ', 'ㅙ', 'ㅚ', 'ㅞ']
-}
 
 # Option
 parser = optparse.OptionParser()
@@ -394,6 +358,7 @@ titles = rnb_ed + bal_ed + rnb_st + bal_st + kkutuWords
 
 
 def g2pRHYME(word , filterWord=''):
+
     inputword = word
     inputword = re.sub('[-=+,#/\?:^$.@*\"※~&%ㆍ!』\\‘|\(\)\[\]\<\>`\'…》]', '', inputword)
     inputword = inputword.replace('\n', ' ')
@@ -450,27 +415,6 @@ def g2pRHYME(word , filterWord=''):
         pprint.pprint(userMoum)
 
         for i in titles: # 나무위키 특수문자, 영어 처리
-            
-            # 발음 처리까지 하면 너무 코드가 느리므로 미리 발음 전처리를 해야됨
-
-            # pron = runKoG2P(i, 'KoG2P-master\\rulebook.txt') # 발음
-            # pron = pron.split(sep=' ')
-
-            # word = ''
-            
-            # for j in pron:
-            #     word += dic[j][0]
-
-            # word = join.join_jamos(word)
-
-            # for k in jaum: # 이응 발음 생략된거 수정
-            #     word = word.replace(k, 'ㅇ'+k)
-
-            # word = join.join_jamos(word)
-
-            # # print(i + ' [' + word + ']') # 최종 발음
-
-            # print(f'\"{i}\"', end='\n\n') # 비교 문자
     
             hangul = re.compile('[^ ㄱ-ㅣ가-힣]+') # 한글과 띄어쓰기를 제외한 모든 글자
             i = hangul.sub('', i) # 한글과 띄어쓰기를 제외한 모든 부분을 제거
@@ -498,7 +442,10 @@ def g2pRHYME(word , filterWord=''):
 
                 wordLength = len(userWords)
 
-                wordLength if length == None else 2 # length 안넣었으면 2
+                wordLength if length == None else wordLength # length 안넣었으면 글자 길이만큼
+
+                if length == None: pass
+                else : wordLength = length
 
                 for uw, cw in zip(userWords, compareWords[-wordLength::]):
 
@@ -540,58 +487,23 @@ def g2pRHYME(word , filterWord=''):
             # rhyme_2 = jaumtype[chos[-2]] == jaumtype[word1[0]] and moumtype[jungs[-2]] == moumtype[word1[1]] and \
             #             jaumtype[chos[-1]] == jaumtype[word2[0]] and moumtype[jungs[-1]] == moumtype[word2[1]]
 
-            rhyme_2 = check_rhyme_ultimate(word, i, 2)
+            # # 끝 글자 두개만 고급 라임 일치 (80&)
+            # rhyme_2 = check_rhyme_ultimate(word, i, 2)
             
-            # 전부 모음 라임 일치
+            # # 전부 모음 라임 일치 (50%)
             # rhyme_3 = check_rhyme(userMoum, compareMoum, len(word))
 
-            # rhyme_4 = check_rhyme_ultimate(word, i)
+            # 전부 고급 라임 일치 (95%)
+            rhyme_4 = check_rhyme_ultimate(word, i)
             
-            if rhyme_2 :
-                print(f'{i} : {rhyme_2}')
-
-
-    endWords = []
-
-    rhymes = []
-
-    words = result
-
-    for i in words:
-
-            if len(i) == 2:
-                    continue
-            else:        
-                    endWords.append(i[-3]+i[-2]+i[-1])
-
-    endWords = set(endWords)
-
-    for j in endWords:
-
-            for w in words:
-
-                    if len(w) == 2:
-                            continue
-
-                    elif w[-3] + w[-2] + w[-1] == j:
-
-                            rhymes.append(w)
-                            
-                            break
-
-    print(rhymes)
-
+            if rhyme_4 :
+                print(f'{i} : {rhyme_4}')
+                result.append(i)
     
+    return result
 
+a = g2pRHYME('비니시우스')
 
-
-    return rhymes
-
-    
-a = g2pRHYME('가지')
-
-print(a)
-print(len(a))
 
 
 
